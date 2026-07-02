@@ -74,8 +74,16 @@ export default function TransactionTable({transacoes, onDelete, onEdit}: Transac
                         "
                         >
 
-                            <td className="p-4 font-medium">
-                                {transacao.descricao}
+                            <td className="p-4">
+                                <div className="
+                                        max-w-[280px]
+                                        truncate
+                                        font-medium
+                                    "
+                                    title={transacao.descricao}
+                                >
+                                    {transacao.descricao}
+                                </div>
                             </td>
 
                             <td className="p-4">
@@ -186,7 +194,12 @@ export default function TransactionTable({transacoes, onDelete, onEdit}: Transac
 
                             <div>
 
-                                <h3 className="font-semibold text-gray-900">
+                                <h3 className="
+                                    font-semibold
+                                    text-gray-900
+                                    break-all
+                                "
+                                >
                                     {transacao.descricao}
                                 </h3>
 
@@ -243,12 +256,13 @@ export default function TransactionTable({transacoes, onDelete, onEdit}: Transac
 
                         </div>
 
-                        <div className="mt-5 flex items-center justify-between">
+                        <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
                         <span
                             className={`
                                 text-xl
                                 font-bold
+                                whitespace-nowrap
                                 ${
                                 transacao.tipoTransacao === "RENDA"
                                     ? "text-green-600"

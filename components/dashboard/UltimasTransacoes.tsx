@@ -13,7 +13,7 @@ export default function UltimasTransacoes({
 
     return (
 
-        <div className="bg-white border rounded-lg">
+        <div className="bg-white border rounded-lg overflow-hidden">
 
             <div className="flex justify-between items-center p-4 border-b">
 
@@ -24,126 +24,127 @@ export default function UltimasTransacoes({
                 <Link
                     href="/transacoes"
                     className="
-        text-sm
-        text-blue-600
-        hover:text-blue-700
-    "
+                    text-sm
+                    text-blue-600
+                    hover:text-blue-700
+                "
                 >
                     Ver todas →
                 </Link>
 
             </div>
 
-            <table className="w-full">
+            <div className="overflow-x-auto">
+                <table className="w-full">
 
-                <thead>
+                    <thead>
 
-                <tr className="text-left text-sm text-gray-500">
+                    <tr className="text-left text-sm text-gray-500">
 
-                    <th className="p-4">
-                        Descrição
-                    </th>
+                        <th className="p-4">
+                            Descrição
+                        </th>
 
-                    <th className="p-4">
-                        Categoria
-                    </th>
+                        <th className="p-4">
+                            Categoria
+                        </th>
 
-                    <th className="p-4">
-                        Data
-                    </th>
+                        <th className="p-4">
+                            Data
+                        </th>
 
-                    <th className="p-4 text-right">
-                        Valor
-                    </th>
+                        <th className="p-4 text-right">
+                            Valor
+                        </th>
 
-                </tr>
+                    </tr>
 
-                </thead>
+                    </thead>
 
-                <tbody>
+                    <tbody>
 
-                {
-                    transacoes.map((transacao) => (
+                    {
+                        transacoes.map((transacao) => (
 
-                        <tr
-                            key={transacao.id}
-                            className="border-t"
-                        >
-
-                            <td className="p-4">
-
-                                <div className="flex items-center gap-3">
-
-                                    <div
-                                        className={`w-2 h-2 rounded-full ${
-                                            transacao.tipoTransacao === "RENDA"
-                                                ? "bg-green-500"
-                                                : "bg-red-500"
-                                        }`}
-                                    />
-
-                                    <span>
-                        {transacao.descricao}
-                    </span>
-
-                                </div>
-
-                            </td>
-
-                            <td className="p-4">
-
-                <span className="
-                    bg-gray-100
-                    text-gray-700
-                    px-2
-                    py-1
-                    rounded-md
-                    text-xs
-                ">
-                    {transacao.categoria}
-                </span>
-
-                            </td>
-
-                            <td className="p-4 text-gray-500">
-
-                                {
-                                    new Date(
-                                        transacao.dataTransacao
-                                    ).toLocaleDateString(
-                                        "pt-BR"
-                                    )
-                                }
-
-                            </td>
-
-                            <td
-                                className={`p-4 text-right font-semibold ${
-                                    transacao.tipoTransacao === "RENDA"
-                                        ? "text-green-600"
-                                        : "text-red-600"
-                                }`}
+                            <tr
+                                key={transacao.id}
+                                className="border-t"
                             >
 
-                                {
-                                    transacao.tipoTransacao === "RENDA"
-                                        ? "+"
-                                        : "-"
-                                }
+                                <td className="p-4">
 
-                                R$ {transacao.valor.toFixed(2)}
+                                    <div className="flex items-center gap-3">
 
-                            </td>
+                                        <div
+                                            className={`w-2 h-2 rounded-full ${
+                                                transacao.tipoTransacao === "RENDA"
+                                                    ? "bg-green-500"
+                                                    : "bg-red-500"
+                                            }`}
+                                        />
 
-                        </tr>
+                                        <span className="truncate max-w-[180px] block">
+                                            {transacao.descricao}
+                                        </span>
 
-                    ))
-                }
+                                    </div>
 
-                </tbody>
+                                </td>
 
-            </table>
+                                <td className="p-4">
 
+                    <span className="
+                        bg-gray-100
+                        text-gray-700
+                        px-2
+                        py-1
+                        rounded-md
+                        text-xs
+                    ">
+                        {transacao.categoria}
+                    </span>
+
+                                </td>
+
+                                <td className="p-4 text-gray-500">
+
+                                    {
+                                        new Date(
+                                            transacao.dataTransacao
+                                        ).toLocaleDateString(
+                                            "pt-BR"
+                                        )
+                                    }
+
+                                </td>
+
+                                <td
+                                    className={`p-4 text-right font-semibold ${
+                                        transacao.tipoTransacao === "RENDA"
+                                            ? "text-green-600"
+                                            : "text-red-600"
+                                    }`}
+                                >
+
+                                    {
+                                        transacao.tipoTransacao === "RENDA"
+                                            ? "+"
+                                            : "-"
+                                    }
+
+                                    R$ {transacao.valor.toFixed(2)}
+
+                                </td>
+
+                            </tr>
+
+                        ))
+                    }
+
+                    </tbody>
+
+                </table>
+            </div>
         </div>
 
     );

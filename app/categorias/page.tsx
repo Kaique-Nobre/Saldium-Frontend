@@ -54,12 +54,15 @@ export default function CategoriasPage() {
     const [resumoCategorias, setResumoCategorias] =
         useState<RelatorioCategoriaResponse[]>([]);
 
-    // =========================
-    // LOAD DATA
-    // =========================
+    const hoje = new Date();
+
+    const [mesSelecionado, setMesSelecionado] = useState(
+        hoje.getMonth() + 1
+    );
+
     useEffect(() => {
         carregarDados();
-    }, []);
+    }, [mesSelecionado]);
 
     const [modalDeleteAberto, setModalDeleteAberto] = useState(false);
 
@@ -71,11 +74,13 @@ export default function CategoriasPage() {
     async function carregarDados() {
 
         const ano = new Date().getFullYear();
-        const mes = new Date().getMonth() + 1;
 
         const [categoriasRes, resumo] = await Promise.all([
             buscarCategorias(),
-            buscarRelatorioCategoria(ano, mes),
+            buscarRelatorioCategoria(
+                ano,
+                mesSelecionado
+            ),
         ]);
 
         setCategorias(categoriasRes);
@@ -233,6 +238,54 @@ export default function CategoriasPage() {
                     </button>
 
                 </div>
+
+                    <div className="
+                            flex
+                            flex-col
+                            sm:flex-row
+                            gap-4
+                            mb-8
+                        ">
+
+                        <select
+                            value={mesSelecionado}
+                            onChange={(e) =>
+                                setMesSelecionado(Number(e.target.value))
+                            }
+                            className="
+                                border
+                                rounded-xl
+                                px-4
+                                py-3
+                                bg-white
+                            "
+                        >
+                            {[
+                                "Janeiro",
+                                "Fevereiro",
+                                "Março",
+                                "Abril",
+                                "Maio",
+                                "Junho",
+                                "Julho",
+                                "Agosto",
+                                "Setembro",
+                                "Outubro",
+                                "Novembro",
+                                "Dezembro",
+                            ].map((mes, index) => (
+
+                                <option
+                                    key={index}
+                                    value={index + 1}
+                                >
+                                    {mes}
+                                </option>
+
+                            ))}
+                        </select>
+
+                    </div>
 
                 {/* CATEGORIAS EM USO */}
                 <div className="flex items-center gap-3 mt-8 mb-6">

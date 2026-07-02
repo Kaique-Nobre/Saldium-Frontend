@@ -5,7 +5,7 @@ import { Wallet, FolderKanban, BarChart3, CreditCard } from "lucide-react";
 
 export default function LandingPage() {
     return (
-        <div className="bg-[#F7F8F5] text-gray-900">
+        <div className="relative overflow-x-hidden bg-[#F7F8F5] text-gray-900">
             {/* HEADER */}
             <header className="
                     fixed

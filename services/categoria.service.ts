@@ -1,4 +1,4 @@
-import { api } from "@/lib/api";
+import { api } from "@/services/api";
 import { CategoriaResponse , CategoriaRequest} from "@/types/categoria.types";
 
 export async function buscarCategoriasPorTipo(

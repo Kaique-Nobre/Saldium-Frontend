@@ -1,4 +1,3 @@
-
 import { api } from "@/services/api";
 import { AlterarSenhaRequest } from "@/types/alterarSenhaRequest";
 

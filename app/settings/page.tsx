@@ -69,7 +69,7 @@ export default function SettingsPage() {
                 localStorage.getItem("accessToken");
 
             await axios.patch(
-                "http://localhost:8080/auth/alterar-senha",
+                "https://saldium.com.br/auth/alterar-senha",
                 {
                     senhaAtual,
                     novaSenha,

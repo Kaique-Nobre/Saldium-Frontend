@@ -79,6 +79,7 @@ api.interceptors.response.use(
                 refreshToken,
             });
 
+
             const newAccessToken = response.data.accessToken;
 
             localStorage.setItem("accessToken", newAccessToken);
@@ -93,7 +94,7 @@ api.interceptors.response.use(
 
             return api(originalRequest);
 
-        } catch (err) {
+        } catch (err: any) {
 
             processQueue(err, null);
 

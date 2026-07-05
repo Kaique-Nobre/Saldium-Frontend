@@ -386,7 +386,7 @@ export default function CategoriasPage() {
                     text-gray-500
                     mb-3
                 ">
-                    Rendas
+                    Receitas
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
@@ -521,7 +521,7 @@ export default function CategoriasPage() {
                     text-gray-500
                     mb-3
                 ">
-                    Rendas
+                    Receitas
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

@@ -16,6 +16,7 @@ import {PieChartIcon, Receipt} from "lucide-react";
 
 interface CategoriasReportProps {
     categorias: RelatorioCategoriaResponse[];
+    tipoSelecionado: "DESPESA" | "RENDA";
 }
 
 const COLORS = [
@@ -30,22 +31,16 @@ const COLORS = [
 ];
 
 export default function CategoriasReport({
-                                             categorias
+                                             categorias,
+                                                tipoSelecionado
                                          }: CategoriasReportProps) {
 
-    const categoriasOrdenadas =
-        [...categorias].sort(
-            (a, b) => b.total - a.total
-        );
+    const categoriasFiltradas = categorias
+        .filter(c => c.tipo === tipoSelecionado)
+        .sort((a, b) => b.total - a.total);
 
-    const categoriasDespesas = categorias.filter(
-        (categoria) => categoria.tipo === "DESPESA"
-    );
-
-    const possuiDespesas =
-        categoriasDespesas.some(
-            categoria => categoria.total > 0
-        );
+    const possuiCategorias =
+        categoriasFiltradas.some(c => c.total > 0);
 
     const [mounted, setMounted] = useState(false);
 
@@ -53,121 +48,139 @@ export default function CategoriasReport({
         setMounted(true);
     }, []);
 
+    const titulo =
+        tipoSelecionado === "DESPESA"
+            ? "Despesas"
+            : "Receitas";
+
+    const descricao =
+        tipoSelecionado === "DESPESA"
+            ? "Visualize como suas despesas estão distribuídas."
+            : "Visualize como suas receitas estão distribuídas.";
+
     return (
 
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
 
+            {/* GRÁFICO */}
+
             <div className="
-                    bg-white
-                    border
-                    border-gray-100
-                    rounded-2xl
-                    p-4
-                    sm:p-6
-                    shadow-sm
-                "
-            >
+                bg-white
+                border
+                border-gray-100
+                rounded-2xl
+                p-4
+                sm:p-6
+                shadow-sm
+            ">
 
-                <div className="mb-5">
+                <div className="flex flex-col gap-5 mb-5">
 
-                    <h2 className="font-semibold text-base sm:text-lg">
-                        Distribuição por categoria
-                    </h2>
+                    <div>
 
-                    <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                        Visualize como suas despesas estão distribuídas.
-                    </p>
+                        <h2 className="font-semibold text-base sm:text-lg">
+                            Distribuição por categoria
+                        </h2>
+
+                        <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                            {descricao}
+                        </p>
+
+                    </div>
 
                 </div>
 
-                {possuiDespesas ? (
+                {possuiCategorias ? (
 
                     mounted && (
 
-                            <div className="w-full h-[260px] sm:h-[300px] min-w-0">
-                                <ResponsiveContainer
-                                    width="100%"
-                                    height={300}
-                                >
+                        <div className="w-full h-[260px] sm:h-[300px]">
 
-                                    <PieChart>
+                            <ResponsiveContainer
+                                width="100%"
+                                height={300}
+                            >
 
-                                        <Pie
-                                            data={categoriasDespesas}
-                                            dataKey="total"
-                                            nameKey="categoria"
-                                            innerRadius={70}
-                                            outerRadius={110}
-                                            isAnimationActive={true}
-                                            animationDuration={900}
-                                            animationBegin={0}
-                                        >
+                                <PieChart>
 
-                                            {categoriasDespesas.map((_, index) => (
+                                    <Pie
+                                        data={categoriasFiltradas}
+                                        dataKey="total"
+                                        nameKey="categoria"
+                                        innerRadius={70}
+                                        outerRadius={110}
+                                        animationDuration={900}
+                                    >
 
-                                                <Cell
-                                                    key={index}
-                                                    fill={
-                                                        COLORS[
-                                                        index %
-                                                        COLORS.length
-                                                            ]
-                                                    }
-                                                />
+                                        {categoriasFiltradas.map((_, index) => (
 
-                                            ))}
+                                            <Cell
+                                                key={index}
+                                                fill={
+                                                    COLORS[
+                                                    index % COLORS.length
+                                                        ]
+                                                }
+                                            />
 
-                                        </Pie>
+                                        ))}
 
-                                        <Tooltip />
+                                    </Pie>
 
-                                    </PieChart>
+                                    <Tooltip />
 
-                                </ResponsiveContainer>
-                            </div>
+                                </PieChart>
+
+                            </ResponsiveContainer>
+
+                        </div>
 
                     )
 
                 ) : (
 
                     <div className="
-                            h-[240px]
-                            sm:h-[300px]
-                            flex
-                            flex-col
-                            items-center
-                            justify-center
-                            text-center
-                        "
-                    >
+                        h-[240px]
+                        sm:h-[300px]
+                        flex
+                        flex-col
+                        items-center
+                        justify-center
+                        text-center
+                    ">
 
                         <div className="
-                                w-14
-                                h-14
-                                sm:w-16
-                                sm:h-16
-                                rounded-2xl
-                                bg-[#1E7A3C]/10
-                                flex
-                                items-center
-                                justify-center
-                                mb-5
-                            "
-                        >
+                            w-16
+                            h-16
+                            rounded-2xl
+                            bg-[#1E7A3C]/10
+                            flex
+                            items-center
+                            justify-center
+                            mb-5
+                        ">
+
                             <PieChartIcon
                                 size={30}
                                 className="text-[#1E7A3C]"
                             />
+
                         </div>
 
                         <h3 className="text-lg font-semibold">
-                            Nenhuma despesa registrada
+
+                            {tipoSelecionado === "DESPESA"
+                                ? "Nenhuma despesa registrada"
+                                : "Nenhuma receita registrada"}
+
                         </h3>
 
                         <p className="text-gray-500 mt-2 max-w-xs">
-                            Assim que você registrar despesas,
-                            o gráfico mostrará a distribuição entre
-                            suas categorias.
+
+                            {tipoSelecionado === "DESPESA"
+                                ? "Assim que você registrar despesas, o gráfico mostrará a distribuição entre suas categorias."
+                                : "Assim que você registrar receitas, o gráfico mostrará a distribuição entre suas categorias."}
+
                         </p>
 
                     </div>
@@ -176,44 +189,45 @@ export default function CategoriasReport({
 
             </div>
 
-            <div className="
-                    bg-white
-                    border
-                    border-gray-100
-                    rounded-2xl
-                    shadow-sm
-                    overflow-hidden
-                    overflow-x-auto
-                "
-            >
+            {/* DETALHAMENTO */}
 
-                <div className="p-5 border-b border-gray-100">
+            <div className="
+                bg-white
+                border
+                border-gray-100
+                rounded-2xl
+                shadow-sm
+                overflow-hidden
+            ">
+
+                <div className="p-5 border-b">
 
                     <h3 className="font-semibold">
                         Detalhamento
                     </h3>
 
                     <p className="text-sm text-gray-500 mt-1">
-                        Gastos por categoria.
+                        {titulo} por categoria.
                     </p>
 
                 </div>
 
-                {possuiDespesas ? (
+                {possuiCategorias ? (
+
                     <>
+
                         <div className="
-                                grid
-                                px-4
-                                sm:px-5
-                                py-3
-                                text-xs
-                                uppercase
-                                font-semibold
-                                tracking-wide
-                                text-gray-500
-                                border-b
-                            "
-                        >
+                            grid
+                            grid-cols-2
+                            px-5
+                            py-3
+                            text-xs
+                            uppercase
+                            font-semibold
+                            tracking-wide
+                            text-gray-500
+                            border-b
+                        ">
 
                             <span>Categoria</span>
 
@@ -223,22 +237,19 @@ export default function CategoriasReport({
 
                         </div>
 
-                        {categoriasDespesas.map((item, index) => (
+                        {categoriasFiltradas.map((item, index) => (
 
                             <div
                                 key={item.categoriaId}
                                 className="
-                                grid
-                                grid-cols-2
-                                px-4
-                                sm:px-5
-                                py-3
-                                sm:py-4
-                                border-b
-                                last:border-b-0
-                                hover:bg-gray-50
-                                transition
-                            "
+                                    grid
+                                    grid-cols-2
+                                    px-5
+                                    py-4
+                                    border-b
+                                    last:border-b-0
+                                    hover:bg-gray-50
+                                "
                             >
 
                                 <div className="flex items-center gap-3">
@@ -247,40 +258,26 @@ export default function CategoriasReport({
                                         className="w-3 h-3 rounded-full"
                                         style={{
                                             backgroundColor:
-                                                COLORS[
-                                                index %
-                                                COLORS.length
-                                                    ]
+                                                COLORS[index % COLORS.length]
                                         }}
                                     />
 
-                                    <span className="
-                                            font-medium
-                                            text-sm
-                                            sm:text-base
-                                            truncate
-                                        "
-                                    >
+                                    <span className="truncate font-medium">
                                         {item.categoria}
                                     </span>
 
                                 </div>
 
-                                <span className="
-                                        text-right
-                                        font-semibold
-                                        text-sm
-                                        sm:text-base
-                                        whitespace-nowrap
-                                    "
-                                >
+                                <span className="text-right font-semibold whitespace-nowrap">
+
                                     {item.total.toLocaleString(
                                         "pt-BR",
                                         {
                                             style: "currency",
-                                            currency: "BRL"
+                                            currency: "BRL",
                                         }
                                     )}
+
                                 </span>
 
                             </div>
@@ -291,8 +288,7 @@ export default function CategoriasReport({
 
                 ) : (
 
-                    <div
-                        className="
+                    <div className="
                         h-[240px]
                         sm:h-[300px]
                         flex
@@ -301,33 +297,40 @@ export default function CategoriasReport({
                         justify-center
                         text-center
                         px-8
-                        "
-                        >
+                    ">
 
                         <div className="
-                                w-14
-                                h-14
-                                rounded-2xl
-                                bg-[#1E7A3C]/10
-                                flex
-                                items-center
-                                justify-center
-                                mb-5
-                            "
-                            >
+                            w-14
+                            h-14
+                            rounded-2xl
+                            bg-[#1E7A3C]/10
+                            flex
+                            items-center
+                            justify-center
+                            mb-5
+                        ">
+
                             <Receipt
                                 size={26}
                                 className="text-[#1E7A3C]"
                             />
+
                         </div>
 
                         <h3 className="font-semibold text-lg">
-                            Nada para detalhar
+
+                            {tipoSelecionado === "DESPESA"
+                                ? "Nenhuma despesa encontrada"
+                                : "Nenhuma receita encontrada"}
+
                         </h3>
 
                         <p className="text-gray-500 mt-2">
-                            As categorias aparecerão aqui conforme
-                            você registrar despesas.
+
+                            {tipoSelecionado === "DESPESA"
+                                ? "As categorias de despesas aparecerão aqui conforme você registrar movimentações."
+                                : "As categorias de receitas aparecerão aqui conforme você registrar movimentações."}
+
                         </p>
 
                     </div>
@@ -335,6 +338,8 @@ export default function CategoriasReport({
                 )}
 
             </div>
+
         </div>
+
     );
 }

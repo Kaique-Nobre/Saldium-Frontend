@@ -59,6 +59,10 @@ export default function RelatoriosPage() {
         "geral" | "categorias" | "evolucao"
     >("geral");
 
+    const [tipoSelecionado, setTipoSelecionado] = useState<
+        "DESPESA" | "RENDA"
+    >("DESPESA");
+
     const [evolucaoData, setEvolucaoData] =
         useState<RelatorioAnualMesResponse[]>([]);
 
@@ -307,19 +311,107 @@ export default function RelatoriosPage() {
                                     duration: 0.25
                                 }}
                             >
-                                <RelatorioFiltros
-                                    ano={ano}
-                                    mes={mes}
-                                    onAnoChange={setAno}
-                                    onMesChange={setMes}
-                                    mostrarAno={false}
-                                    mostrarMes={true}
-                                />
+                                <div className="
+                                         mb-6
+                                        rounded-2xl
+                                        border
+                                        bg-white
+                                        p-4
+                                        shadow-sm
+
+                                        flex
+                                        flex-col
+                                        gap-4
+
+                                        lg:flex-row
+                                        lg:items-end
+                                        lg:justify-between
+                                    ">
+
+                                    <div className="flex-1">
+                                        <RelatorioFiltros
+                                            ano={ano}
+                                            mes={mes}
+                                            onAnoChange={setAno}
+                                            onMesChange={setMes}
+                                            mostrarAno={false}
+                                            mostrarMes={true}
+                                            semContainer
+                                        />
+                                    </div>
+
+                                    <div className="
+                                        flex
+                                        w-full
+                                        lg:w-auto
+
+                                        rounded-xl
+                                        border
+                                        bg-gray-100
+                                        p-1
+
+                                        self-stretch
+                                        lg:self-auto
+                                    ">
+
+                                        <button onClick={() => setTipoSelecionado("DESPESA")}
+                                                className={`
+                                                flex-1
+                                                lg:flex-none
+                                    
+                                                px-5
+                                                py-2.5
+                                    
+                                                rounded-lg
+                                                text-sm
+                                                font-medium
+                                    
+                                                transition-all
+
+                                            ${
+                                                tipoSelecionado === "DESPESA"
+                                                    ? "bg-black text-white shadow-sm"
+                                                    : "text-gray-600 hover:bg-white"
+                                            }
+                                        `}>
+                                            Despesas
+                                        </button>
+
+                                        <button onClick={() => setTipoSelecionado("RENDA")}
+                                                className={`
+                                                flex-1
+                                                lg:flex-none
+                                    
+                                                px-5
+                                                py-2.5
+                                    
+                                                rounded-lg
+                                                text-sm
+                                                font-medium
+                                    
+                                                transition-all
+                                    
+                                            ${
+                                                tipoSelecionado === "RENDA"
+                                                    ? "bg-black text-white shadow-sm"
+                                                    : "text-gray-600 hover:bg-white"
+                                            }
+                                        `}>
+                                            Receitas
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
                                 <div className="min-h-[420px]">
+
                                     <CategoriasReport
-                                        key={`categorias-${ano}-${mes}`}
+                                        key={`categorias-${ano}-${mes}-${tipoSelecionado}`}
                                         categorias={relatorioCategorias}
+                                        tipoSelecionado={tipoSelecionado}
                                     />
+
                                 </div>
                             </motion.div>
                         )}

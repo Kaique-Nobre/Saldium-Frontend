@@ -9,6 +9,8 @@ interface RelatorioFiltrosProps {
 
     mostrarAno?: boolean;
     mostrarMes?: boolean;
+
+    semContainer?: boolean;
 }
 
 const meses = [
@@ -32,14 +34,23 @@ export default function RelatorioFiltros({
                                              onAnoChange,
                                              onMesChange,
                                              mostrarAno,
-                                             mostrarMes
+                                             mostrarMes,
+                                            semContainer = false
                                          }: RelatorioFiltrosProps) {
 
     const anoAtual = new Date().getFullYear();
 
     return (
-        <div className="bg-white border rounded-lg p-4 mb-6">
-
+        <div className={`
+            ${!semContainer && `
+                bg-white
+                border
+                rounded-2xl
+                p-4
+                shadow-sm
+                mb-6
+            `}
+        `}>
             <div className="flex flex-col sm:flex-row gap-4">
 
                 <div  className="w-full sm:w-auto">
